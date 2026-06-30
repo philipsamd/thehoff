@@ -22,17 +22,6 @@ import {
   Upload,
   X,
 } from "lucide-react";
-  Share2,
-  Send,
-  History,
-  FileVideo,
-  FileText,
-  FileSpreadsheet,
-  FileImage,
-  FileArchive,
-  Presentation,
-  X,
-} from "lucide-react";
 import {
   Sheet,
   SheetContent,
