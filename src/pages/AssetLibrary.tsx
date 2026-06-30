@@ -1,14 +1,27 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { StatusBadge } from "@/components/StatusBadge";
-import { assets, type Asset } from "@/lib/mockData";
+import { type Asset } from "@/lib/mockData";
+import { useAssets } from "@/lib/store";
 import {
   Search,
   Filter,
   Download,
+  Share2,
+  Send,
+  History,
+  FileVideo,
+  FileText,
+  FileSpreadsheet,
+  FileImage,
+  FileArchive,
+  Presentation,
+  Upload,
+  X,
+} from "lucide-react";
   Share2,
   Send,
   History,
