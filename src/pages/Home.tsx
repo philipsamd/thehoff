@@ -136,7 +136,12 @@ export default function Home() {
             {quickActions.map((a) => (
               <button
                 key={a.label}
-                onClick={() => toast.success(`${a.label} initiated`)}
+                onClick={() => {
+                  if (a.action === "upload") setUploadOpen(true);
+                  else if (a.action.startsWith("/")) navigate(a.action);
+                  else if (a.action.startsWith("toast:")) toast.success(a.action.slice(6));
+                  else toast.success(`${a.label} initiated`);
+                }}
                 className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card p-4 hover:border-primary/30 hover:bg-primary-soft/40 transition-all hover:shadow-soft"
               >
                 <div className="h-10 w-10 rounded-lg bg-primary-soft text-primary flex items-center justify-center group-hover:bg-gradient-primary group-hover:text-primary-foreground transition-colors">
