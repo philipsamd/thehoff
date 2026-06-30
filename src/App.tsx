@@ -15,6 +15,8 @@ import Approvals from "./pages/Approvals";
 import Analytics from "./pages/Analytics";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound.tsx";
+import { AssetsProvider } from "@/lib/store";
+import { UploadAssetDialog } from "@/components/UploadAssetDialog";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <AssetsProvider>
+      <UploadAssetDialog />
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
@@ -40,6 +44,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </AssetsProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
