@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { StatusBadge } from "@/components/StatusBadge";
-import { assets, type Asset } from "@/lib/mockData";
+import { type Asset } from "@/lib/mockData";
+import { useAssets } from "@/lib/store";
 import {
   Search,
   Filter,
@@ -18,6 +19,7 @@ import {
   FileImage,
   FileArchive,
   Presentation,
+  Upload,
   X,
 } from "lucide-react";
 import {
@@ -48,9 +50,15 @@ function typeIcon(type: string) {
 }
 
 export default function AssetLibrary() {
-  const [q, setQ] = useState("");
+  const { assets, globalSearch, setGlobalSearch, setUploadOpen } = useAssets();
+  const [q, setQ] = useState(globalSearch);
   const [active, setActive] = useState<Asset | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  // Sync from global search (header) into local input
+  useEffect(() => {
+    setQ(globalSearch);
+  }, [globalSearch]);
 
   const toggle = (v: string) =>
     setSelectedFilters((s) => (s.includes(v) ? s.filter((x) => x !== v) : [...s, v]));
@@ -61,7 +69,9 @@ export default function AssetLibrary() {
         !q ||
         a.name.toLowerCase().includes(q.toLowerCase()) ||
         a.tags.some((t) => t.toLowerCase().includes(q.toLowerCase())) ||
-        a.product.toLowerCase().includes(q.toLowerCase());
+        a.product.toLowerCase().includes(q.toLowerCase()) ||
+        a.campaign.toLowerCase().includes(q.toLowerCase()) ||
+        a.owner.toLowerCase().includes(q.toLowerCase());
       const matchesFilters =
         selectedFilters.length === 0 ||
         selectedFilters.some(
@@ -76,15 +86,20 @@ export default function AssetLibrary() {
         );
       return matchesQ && matchesFilters;
     });
-  }, [q, selectedFilters]);
+  }, [assets, q, selectedFilters]);
 
   return (
     <div className="max-w-[1500px] mx-auto">
-      <header className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Asset Library</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Governed DAM across PAL, Contentful, Seismic, and SharePoint sources.
-        </p>
+      <header className="mb-6 flex items-start justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Asset Library</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Governed DAM across PAL, Contentful, Seismic, and SharePoint sources.
+          </p>
+        </div>
+        <Button className="bg-gradient-primary" onClick={() => setUploadOpen(true)}>
+          <Upload className="h-4 w-4 mr-1.5" /> Upload Asset
+        </Button>
       </header>
 
       <div className="grid grid-cols-12 gap-6">
@@ -135,7 +150,10 @@ export default function AssetLibrary() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={(e) => {
+                setQ(e.target.value);
+                setGlobalSearch(e.target.value);
+              }}
               placeholder="Search assets by name, product, tag..."
               className="pl-10 h-11 bg-card shadow-soft"
             />

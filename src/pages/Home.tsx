@@ -19,15 +19,16 @@ import {
   Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAssets } from "@/lib/store";
 
-const quickActions = [
-  { label: "Upload Asset", icon: Upload },
-  { label: "Create Campaign", icon: Megaphone },
-  { label: "New SEO Brief", icon: FileText },
-  { label: "New Paid Ad", icon: Target },
-  { label: "Push to Seismic", icon: Send },
-  { label: "Send for Review", icon: CheckCircle2 },
+const quickActions: { label: string; icon: any; action: string }[] = [
+  { label: "Upload Asset", icon: Upload, action: "upload" },
+  { label: "Create Campaign", icon: Megaphone, action: "/campaigns" },
+  { label: "New SEO Brief", icon: FileText, action: "/seo" },
+  { label: "New Paid Ad", icon: Target, action: "/paid" },
+  { label: "Push to Seismic", icon: Send, action: "toast:Seismic package queued" },
+  { label: "Send for Review", icon: CheckCircle2, action: "toast:Sent for review" },
 ];
 
 const recent = [
@@ -45,6 +46,9 @@ const compliance = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
+  const { globalSearch, setGlobalSearch, setUploadOpen } = useAssets();
+  const goSearch = () => navigate("/assets");
   return (
     <div className="space-y-6 max-w-[1500px] mx-auto">
       {/* Hero */}
@@ -63,10 +67,13 @@ export default function Home() {
           <div className="mt-6 flex items-center gap-2 bg-white rounded-xl p-1.5 shadow-lifted max-w-2xl">
             <Search className="ml-3 h-5 w-5 text-muted-foreground" />
             <Input
+              value={globalSearch}
+              onChange={(e) => setGlobalSearch(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && goSearch()}
               placeholder="Search all assets, campaigns, copy, keywords, specs..."
               className="border-0 focus-visible:ring-0 text-foreground bg-transparent h-10"
             />
-            <Button className="bg-gradient-primary text-primary-foreground shadow-glow">Search</Button>
+            <Button onClick={goSearch} className="bg-gradient-primary text-primary-foreground shadow-glow">Search</Button>
           </div>
         </div>
       </section>
@@ -129,7 +136,12 @@ export default function Home() {
             {quickActions.map((a) => (
               <button
                 key={a.label}
-                onClick={() => toast.success(`${a.label} initiated`)}
+                onClick={() => {
+                  if (a.action === "upload") setUploadOpen(true);
+                  else if (a.action.startsWith("/")) navigate(a.action);
+                  else if (a.action.startsWith("toast:")) toast.success(a.action.slice(6));
+                  else toast.success(`${a.label} initiated`);
+                }}
                 className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card p-4 hover:border-primary/30 hover:bg-primary-soft/40 transition-all hover:shadow-soft"
               >
                 <div className="h-10 w-10 rounded-lg bg-primary-soft text-primary flex items-center justify-center group-hover:bg-gradient-primary group-hover:text-primary-foreground transition-colors">

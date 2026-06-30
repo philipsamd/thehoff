@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Bell, Search, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -15,9 +15,13 @@ import {
 } from "@/components/ui/select";
 import { roles } from "@/lib/mockData";
 import { CommandCenterAI } from "@/components/CommandCenterAI";
+import { useAssets } from "@/lib/store";
+import { toast } from "sonner";
 
 export default function AppLayout() {
   const [aiOpen, setAiOpen] = useState(false);
+  const { globalSearch, setGlobalSearch } = useAssets();
+  const navigate = useNavigate();
 
   return (
     <SidebarProvider>
@@ -30,13 +34,21 @@ export default function AppLayout() {
               <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
+                  value={globalSearch}
+                  onChange={(e) => setGlobalSearch(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") navigate("/assets");
+                  }}
                   placeholder="Search all assets, campaigns, copy, keywords, specs..."
                   className="pl-9 h-9 bg-background/60 border-border"
                 />
               </div>
             </div>
             <div className="flex-1 md:hidden" />
-            <Select defaultValue="Digital Strategy Manager">
+            <Select
+              defaultValue="Digital Strategy Manager"
+              onValueChange={(v) => toast.success(`Switched to ${v}`)}
+            >
               <SelectTrigger className="h-9 w-[200px] hidden lg:flex bg-background/60">
                 <SelectValue />
               </SelectTrigger>
@@ -57,7 +69,12 @@ export default function AppLayout() {
               <Sparkles className="h-4 w-4" />
               <span className="hidden sm:inline">Command Center AI</span>
             </Button>
-            <Button variant="ghost" size="icon" className="h-9 w-9">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9"
+              onClick={() => toast("3 new notifications", { description: "2 approvals pending, 1 expiring asset" })}
+            >
               <Bell className="h-4 w-4" />
             </Button>
             <Avatar className="h-8 w-8 ring-2 ring-primary/10">
