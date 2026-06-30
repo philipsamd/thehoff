@@ -19,7 +19,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAssets } from "@/lib/store";
 
 const quickActions = [
   { label: "Upload Asset", icon: Upload },
