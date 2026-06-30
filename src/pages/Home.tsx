@@ -46,6 +46,9 @@ const compliance = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
+  const { globalSearch, setGlobalSearch, setUploadOpen } = useAssets();
+  const goSearch = () => navigate("/assets");
   return (
     <div className="space-y-6 max-w-[1500px] mx-auto">
       {/* Hero */}
