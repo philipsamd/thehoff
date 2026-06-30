@@ -22,13 +22,13 @@ import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { useAssets } from "@/lib/store";
 
-const quickActions = [
-  { label: "Upload Asset", icon: Upload },
-  { label: "Create Campaign", icon: Megaphone },
-  { label: "New SEO Brief", icon: FileText },
-  { label: "New Paid Ad", icon: Target },
-  { label: "Push to Seismic", icon: Send },
-  { label: "Send for Review", icon: CheckCircle2 },
+const quickActions: { label: string; icon: any; action: string }[] = [
+  { label: "Upload Asset", icon: Upload, action: "upload" },
+  { label: "Create Campaign", icon: Megaphone, action: "/campaigns" },
+  { label: "New SEO Brief", icon: FileText, action: "/seo" },
+  { label: "New Paid Ad", icon: Target, action: "/paid" },
+  { label: "Push to Seismic", icon: Send, action: "toast:Seismic package queued" },
+  { label: "Send for Review", icon: CheckCircle2, action: "toast:Sent for review" },
 ];
 
 const recent = [
