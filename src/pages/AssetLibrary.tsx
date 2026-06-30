@@ -150,7 +150,10 @@ export default function AssetLibrary() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={(e) => {
+                setQ(e.target.value);
+                setGlobalSearch(e.target.value);
+              }}
               placeholder="Search assets by name, product, tag..."
               className="pl-10 h-11 bg-card shadow-soft"
             />
