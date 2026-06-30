@@ -67,10 +67,13 @@ export default function Home() {
           <div className="mt-6 flex items-center gap-2 bg-white rounded-xl p-1.5 shadow-lifted max-w-2xl">
             <Search className="ml-3 h-5 w-5 text-muted-foreground" />
             <Input
+              value={globalSearch}
+              onChange={(e) => setGlobalSearch(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && goSearch()}
               placeholder="Search all assets, campaigns, copy, keywords, specs..."
               className="border-0 focus-visible:ring-0 text-foreground bg-transparent h-10"
             />
-            <Button className="bg-gradient-primary text-primary-foreground shadow-glow">Search</Button>
+            <Button onClick={goSearch} className="bg-gradient-primary text-primary-foreground shadow-glow">Search</Button>
           </div>
         </div>
       </section>
