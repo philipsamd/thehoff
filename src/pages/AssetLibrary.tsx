@@ -29,6 +29,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
+import { Glass } from "@samasante/liquid-glass";
+import { panelGlassOptics } from "@/lib/glass";
 
 const filterGroups = {
   Product: ["MCOT", "ePatch", "IntelliSpace ECG", "ECG Reports App", "Cardiac Workstation", "Cardiologs"],
@@ -243,9 +245,11 @@ export default function AssetLibrary() {
 
       {/* Detail drawer */}
       <Sheet open={!!active} onOpenChange={(o) => !o && setActive(null)}>
-        <SheetContent className="w-full sm:max-w-xl overflow-y-auto">
+        <SheetContent className="w-full sm:max-w-xl overflow-y-auto bg-transparent p-0">
           {active && (
-            <>
+            <div className="min-h-full flex">
+              <Glass className="flex-1 p-6 bg-background/90" radius={0} optics={panelGlassOptics}>
+              <>
               <SheetHeader>
                 <div className={`h-40 -mx-6 -mt-6 mb-2 bg-gradient-to-br ${active.thumbColor} flex items-center justify-center`}>
                   {(() => {
@@ -329,6 +333,8 @@ export default function AssetLibrary() {
                 </Button>
               </div>
             </>
+              </Glass>
+            </div>
           )}
         </SheetContent>
       </Sheet>
