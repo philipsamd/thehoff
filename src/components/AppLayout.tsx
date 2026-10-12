@@ -17,6 +17,8 @@ import { roles } from "@/lib/mockData";
 import { CommandCenterAI } from "@/components/CommandCenterAI";
 import { useAssets } from "@/lib/store";
 import { toast } from "sonner";
+import { Glass } from "@samasante/liquid-glass";
+import { headerGlassOptics } from "@/lib/glass";
 
 export default function AppLayout() {
   const [aiOpen, setAiOpen] = useState(false);
@@ -28,7 +30,11 @@ export default function AppLayout() {
       <div className="min-h-screen flex w-full bg-gradient-subtle">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="sticky top-0 z-30 h-14 flex items-center gap-3 border-b border-border glass px-3 md:px-5">
+          <header className="sticky top-0 z-30 h-14 border-b border-border">
+            <Glass
+              className="h-full w-full flex items-center gap-3 px-3 md:px-5 bg-background/65"
+              optics={headerGlassOptics}
+            >
             <SidebarTrigger className="text-muted-foreground" />
             <div className="hidden md:flex items-center gap-2 max-w-xl flex-1">
               <div className="relative w-full">
@@ -82,6 +88,7 @@ export default function AppLayout() {
                 MR
               </AvatarFallback>
             </Avatar>
+            </Glass>
           </header>
           <main className="flex-1 p-4 md:p-6 lg:p-8">
             <Outlet />
