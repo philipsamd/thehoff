@@ -3,7 +3,7 @@
 // rendered on top stays crisp and high-contrast (WCAG-friendly).
 export const headerGlassOptics = {
   strength: 0.04,
-  frost: 10,
+  frost: 16,
   depth: 0.3,
   curvature: 0.15,
   dispersion: 0.1,
