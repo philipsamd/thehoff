@@ -31,7 +31,7 @@ export default function AppLayout() {
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           <header className="sticky top-0 z-30 h-14 border-b border-border flex">
-            <Glass className="flex-1 min-w-0" radius={0} optics={headerGlassOptics}>
+            <Glass className="flex-1 min-w-0 bg-background/70" radius={0} optics={headerGlassOptics}>
               <div className="h-full w-full flex items-center gap-3 px-3 md:px-5">
 
             <SidebarTrigger className="text-muted-foreground" />
